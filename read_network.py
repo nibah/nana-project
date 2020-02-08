@@ -16,9 +16,6 @@ def read_tsv(path):
 	with open(path) as tsvfile:
 		reader = csv.DictReader(tsvfile, dialect='excel-tab')
 		for row in reader:
-			graph.add_edge(row['SOURCE_SUBREDDIT'], row['TARGET_SUBREDDIT'])
-			graph[row['SOURCE_SUBREDDIT']][row['TARGET_SUBREDDIT']]['POST_ID'] = row['POST_ID']
-			graph[row['SOURCE_SUBREDDIT']][row['TARGET_SUBREDDIT']]['TIMESTAMP'] = row['TIMESTAMP']
-			graph[row['SOURCE_SUBREDDIT']][row['TARGET_SUBREDDIT']]['LINK_SENTIMENT'] = row['LINK_SENTIMENT']
-			graph[row['SOURCE_SUBREDDIT']][row['TARGET_SUBREDDIT']]['PROPERTIES'] = row['PROPERTIES']
+			graph.add_edge(row['SOURCE_SUBREDDIT'], row['TARGET_SUBREDDIT'], post_id = row['POST_ID'], \
+					timestamp = row['TIMESTAMP'], link_sentiment = row['LINK_SENTIMENT'], properties = row['PROPERTIES'])
 	return graph
