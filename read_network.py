@@ -38,7 +38,8 @@ def merge_edges(graph):
 	weighted_graph = nx.DiGraph()
 	for u,v in graph.edges():
 		if weighted_graph.has_edge(u,v):
-			weighted_graph[u][v]["weight"] += 1
+			weighted_graph[u][v]['weight'] += 1
+			weighted_graph[u][v]['sentiment'] += int(graph[u][v][0]['link_sentiment'])
 		else:
-			weighted_graph.add_edge(u, v, weight=1)
+			weighted_graph.add_edge(u, v, weight=1, sentiment=int(graph[u][v][0]['link_sentiment']))
 	return weighted_graph
