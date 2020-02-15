@@ -34,12 +34,20 @@ def merge_edges(graph):
 	OUTPUT:
 	- ``graph`` -- A NetworkX DiGraph where each edge has a new attribute 'weight'.
 	"""
-	# Using ideas from https://stackoverflow.com/questions/15590812/networkx-convert-multigraph-into-simple-graph-with-weighted-edges
 	weighted_graph = nx.DiGraph()
+	# Calculate weights
+	# Using ideas from https://stackoverflow.com/questions/15590812/networkx-convert-multigraph-into-simple-graph-with-weighted-edges
 	for u,v in graph.edges():
 		if weighted_graph.has_edge(u,v):
 			weighted_graph[u][v]['weight'] += 1
-			weighted_graph[u][v]['sentiment'] += int(graph[u][v][0]['link_sentiment'])
 		else:
-			weighted_graph.add_edge(u, v, weight=1, sentiment=int(graph[u][v][0]['link_sentiment']))
+			weighted_graph.add_edge(u, v, weight=1)
+
+	# Calculate sentiment
+	for u, v in graph.edges():
+		sentiment = 0
+		for edge in graph[u][v].values():
+			sentiment += int(edge['link_sentiment'])
+		weighted_graph[u][v]['sentiment'] = sentiment
+
 	return weighted_graph
