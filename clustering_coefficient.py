@@ -6,7 +6,7 @@ def calc_cc(graph):
 	Calculates the clustering coefficient for each node in the graph. The values are stored in a new attribute named 'cc'.
 
 	INPUT:
-	- ``graph`` -- The garph in which the clustering coefficient should be calculated.
+	- ``graph`` -- The graph in which the clustering coefficient should be calculated.
 	"""
 	clustering_coeffs = {}
 	for node in graph.nodes():
