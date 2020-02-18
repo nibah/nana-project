@@ -1,12 +1,12 @@
 import networkx as nx
 import csv
 
-def read_tsv(path, read_attr=False):
+def read_tsv(paths, read_attr=False):
 	"""
-	Read graph edgelist, edge attributes and edge properties from a .tsv file.
+	Read graph edgelist, edge attributes and edge properties from .tsv files.
 
 	INPUT:
-	- ``path`` -- The location of the .tsv file.
+	- ``paths`` -- A list of strings with the locations of the .tsv files.
 	- ``read_attr`` -- True if attributes should be read. Otherwise the edges will be read without any labels.
 
 	OUTPUT:
@@ -14,14 +14,17 @@ def read_tsv(path, read_attr=False):
 	"""
 	# Using ideas from https://medium.com/@adds68/parsing-tsv-file-with-csv-in-python-662d6347b0cd
 	graph = nx.MultiDiGraph()
-	with open(path) as tsvfile:
-		reader = csv.DictReader(tsvfile, dialect='excel-tab')
-		for row in reader:
-			if (read_attr):
-				graph.add_edge(row['SOURCE_SUBREDDIT'], row['TARGET_SUBREDDIT'], post_id = row['POST_ID'], \
-						timestamp = row['TIMESTAMP'], link_sentiment = row['LINK_SENTIMENT'], properties = row['PROPERTIES'])
-			else:
-				graph.add_edge(row['SOURCE_SUBREDDIT'], row['TARGET_SUBREDDIT'])
+	if isinstance(paths, str):
+		paths = [paths]
+	for path in paths:
+		with open(path) as tsvfile:
+			reader = csv.DictReader(tsvfile, dialect='excel-tab')
+			for row in reader:
+				if (read_attr):
+					graph.add_edge(row['SOURCE_SUBREDDIT'], row['TARGET_SUBREDDIT'], post_id = row['POST_ID'], \
+							timestamp = row['TIMESTAMP'], link_sentiment = row['LINK_SENTIMENT'], properties = row['PROPERTIES'])
+				else:
+					graph.add_edge(row['SOURCE_SUBREDDIT'], row['TARGET_SUBREDDIT'])
 	return graph
 
 def merge_edges(graph):
