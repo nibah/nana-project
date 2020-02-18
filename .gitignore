@@ -1,3 +1,5 @@
 soc-redditHyperlinks-body.tsv
 soc-redditHyperlinks-title.tsv
 *.pdf
+__pycache__
+.ipynb_checkpoints
