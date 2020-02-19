@@ -20,8 +20,7 @@ def plot_distribution(original_graph, lower_limit=-1, upper_limit=-1):
 	plt.plot(x, y)
 	plt.show()
 
-graph_body = read_tsv("data/soc-redditHyperlinks-body.tsv", False)
-graph_title = read_tsv("data/soc-redditHyperlinks-title.tsv", False)
+graph = read_tsv(["data/soc-redditHyperlinks-body.tsv", "data/soc-redditHyperlinks-title.tsv"], False)
 
 #plot_distribution(graph_body, -1, 100)
 #plot_distribution(graph_title, -1, 100)
@@ -29,7 +28,5 @@ graph_title = read_tsv("data/soc-redditHyperlinks-title.tsv", False)
 #print(nx.info(cut_by_degree(graph_body, range(0, 50))))
 #print(nx.info(cut_by_degree(graph_body, range(0, 10))))
 
-cut_body = cut_by_degree(graph_body, range(0, 50))
-cut_title = cut_by_degree(graph_title, range(0,50))
-plot_distribution(cut_body, -1, 100)
-plot_distribution(cut_title, -1, 100)
+cut_graph = cut_by_degree(graph, range(0, 50))
+plot_distribution(cut_graph, -1, 100)
