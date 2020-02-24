@@ -1,6 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.backends.backend_pdf import PdfPages
 from read_network import read_tsv, cut_by_degree
 
 def plot_distribution(original_graph, lower_limit=-1, upper_limit=-1):
@@ -18,15 +19,25 @@ def plot_distribution(original_graph, lower_limit=-1, upper_limit=-1):
 	y = nx.degree_histogram(graph)
 	x = np.linspace(0, len(y), len(y))
 	plt.plot(x, y)
-	plt.show()
+	#plt.show()
 
 graph = read_tsv(["data/soc-redditHyperlinks-body.tsv", "data/soc-redditHyperlinks-title.tsv"], False)
+pdf = PdfPages("Degree Distribution.pdf")
 
-#plot_distribution(graph_body, -1, 100)
-#plot_distribution(graph_title, -1, 100)
-#print(nx.info(cut_by_degree(graph_body, range(0, 100))))
-#print(nx.info(cut_by_degree(graph_body, range(0, 50))))
-#print(nx.info(cut_by_degree(graph_body, range(0, 10))))
+plt.title("Degree distribution over the entire network")
+plt.xscale('log')
+plot_distribution(graph, -1, -1)
+pdf.savefig()
+plt.close()
 
-cut_graph = cut_by_degree(graph, range(0, 50))
-plot_distribution(cut_graph, -1, 100)
+plt.title("Degree distribution after removing all nodes with degree < 50")
+plot_distribution(graph, 50, -1)
+pdf.savefig()
+plt.close()
+
+plt.title("Degree distribution after removing all nodes with degree > 100")
+plot_distribution(graph, -1, 100)
+pdf.savefig()
+plt.close()
+
+pdf.close()
