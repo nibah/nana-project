@@ -11,7 +11,7 @@ def ImportToDf(path, delimiter = None, header = 0, names = []):
 def ReduceTimeInterval(df, start, end):
 	return df[(df.TIMESTAMP >= start) & (df.TIMESTAMP <= end)].reset_index(drop=True)
 
-def split_by_month(hyperlinks, weighted=True):
+def split_by_month(hyperlinks, weighted=True, undirected=False, threshold=0):
 	monthly_links = []
 	for year in ['2014', '2015', '2016']:
 		for month in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']:
@@ -27,18 +27,22 @@ def split_by_month(hyperlinks, weighted=True):
 	if (weighted):
 		weighted_monthly_graphs = []
 		for graph in monthly_graphs:
-			weighted_monthly_graphs.append(merge_edges(graph))
+			weighted_monthly_graphs.append(merge_edges(graph, undirected, threshold))
 			graph.clear()
 		return weighted_monthly_graphs
 
 	return monthly_graphs
 
-title = ImportToDf('data/soc-redditHyperlinks-title.tsv', delimiter = '\t')
-body = ImportToDf('data/soc-redditHyperlinks-body.tsv', delimiter = '\t')
-hyperlinks = pd.concat([title, body])
+def main():
+	title = ImportToDf('data/soc-redditHyperlinks-title.tsv', delimiter = '\t')
+	body = ImportToDf('data/soc-redditHyperlinks-body.tsv', delimiter = '\t')
+	hyperlinks = pd.concat([title, body])
 
-wmg = split_by_month(hyperlinks)
-i = 0
-for graph in wmg:
-	nx.write_gml(graph, "data/subgraph-" + str(i) + ".gml")
-	i += 1
+	wmg = split_by_month(hyperlinks)
+	i = 0
+	for graph in wmg:
+		nx.write_gml(graph, "data/subgraph-" + str(i) + ".gml")
+		i += 1
+
+if __name__ == "__main__":
+	main()
