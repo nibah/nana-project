@@ -33,7 +33,7 @@ def read_tsv(paths, read_attr=False):
 #	Predicting positive and negative links in online social networks.
 #	In Proceedings of the 19th international conference on World wide web (pp. 641-650).
 #	https://doi.org/10.1145/1772690.1772756
-def merge_edges(graph, undirected=False, threshold=0):
+def merge_edges(graph, undirected=False, threshold=1/3):
 	"""
 	Merge multi edges into single weighted edges.
 
@@ -42,7 +42,10 @@ def merge_edges(graph, undirected=False, threshold=0):
 	- ``undirected -- Boolean, indicating if the output should be an undirected graph.
 	- ``threshold`` -- A real number from 0 to 1, used to calculate edge sign
 	if the output graph is undirected. A higher threshold will delete edges
-	that have ambiguous sentiment.
+	that have ambiguous sentiment. For example, a threshold of 1/3 means that
+	an edge (u,v) in the output undirected graph will exist and have a sign
+	only if more than 2/3 of the edges (u,v) or (v,u) in the original directed
+	multigraph were of that same sign.
 
 	OUTPUT:
 	- ``graph`` -- A NetworkX DiGraph where each edge has a new attribute 'WEIGHT'.
@@ -80,7 +83,7 @@ def merge_edges(graph, undirected=False, threshold=0):
 			# ideas adapted from https://doi.org/10.1145/1772690.1772756
 			# (their graph does not have multiple parallel edges)
 			weight = weighted_graph[u][v]['WEIGHT']
-			if abs(sentiment) / weight >= threshold:
+			if abs(sentiment) / weight > threshold:
 				sign = 1
 				if sentiment < 0:
 					sign = -1

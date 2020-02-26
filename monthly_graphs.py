@@ -11,7 +11,7 @@ def ImportToDf(path, delimiter = None, header = 0, names = []):
 def ReduceTimeInterval(df, start, end):
 	return df[(df.TIMESTAMP >= start) & (df.TIMESTAMP <= end)].reset_index(drop=True)
 
-def split_by_month(hyperlinks, weighted=True, undirected=False, threshold=0):
+def split_by_month(hyperlinks, weighted=True, undirected=False, threshold=1/3):
 	monthly_links = []
 	for year in ['2014', '2015', '2016']:
 		for month in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']:
