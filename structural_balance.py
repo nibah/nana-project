@@ -27,14 +27,13 @@ def dfs(G, u):
 
 
 def is_balanced(G):
-    ccomponents = (G.subgraph(c).copy() for c in nx.connected_components(G))
-    for CC in ccomponents:
-        # initialize nodes and edges
-        nx.set_edge_attributes(CC, name=TESTED, values=False)
-        nx.set_node_attributes(CC, name=VISITED, values=False)
-        # pick a node as root for the depth-first-search (DFS)
-        root = next(n for n in CC)
-        CC.nodes[root][SIGN] = 1
-        if not dfs(CC, root):
-            return False
+    # initialize nodes and edges
+    nx.set_edge_attributes(G, name=TESTED, values=False)
+    nx.set_node_attributes(G, name=VISITED, values=False)
+    # in case the graph is not connected, start as many DFS as necessary
+    for n in G:
+        if not G.nodes[n][VISITED]:
+            G.nodes[n][SIGN] = 1
+            if not dfs(G, n):
+                return False
     return True
