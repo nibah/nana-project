@@ -37,9 +37,4 @@ def is_balanced(G):
         CC.nodes[root][SIGN] = 1
         if not dfs(CC, root):
             return False
-        for u, v, tested in CC.edges(data=TESTED):
-            if tested:
-                continue
-            if CC[u][v][SIGN] != CC.nodes[u][SIGN] * CC.nodes[v][SIGN]:
-                return False
     return True
