@@ -32,14 +32,10 @@ def plot_cc(graph):
 
 graph = read_tsv(["data/soc-redditHyperlinks-body.tsv", "data/soc-redditHyperlinks-title.tsv"], True)
 weighted_graph = merge_edges(graph)
+
 pdf = PdfPages("Clustering Coefficient.pdf")
-
-#average_cc = nx.average_clustering(weighted_graph)
-#plt.axvline(x=average_cc, color='r', linestyle='-')
-
 plt.title("Clustering coefficients over the network")
 plot_cc(weighted_graph)
 pdf.savefig()
 plt.close()
-
 pdf.close()

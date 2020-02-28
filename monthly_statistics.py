@@ -47,6 +47,7 @@ for name, month in monthly_links.items():
 
 	perc_neg_edges.append(count_neg / count_all)
 
+# plot statistics
 pdf = PdfPages("Negative Edges Monthly.pdf")
 
 plt.title("Number of edges over months")

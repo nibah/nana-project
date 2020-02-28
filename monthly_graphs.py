@@ -12,6 +12,23 @@ def ReduceTimeInterval(df, start, end):
 	return df[(df.TIMESTAMP >= start) & (df.TIMESTAMP <= end)].reset_index(drop=True)
 
 def split_by_month(hyperlinks, weighted=True, undirected=False, threshold=1/3):
+	"""
+	Splits the data defined by hyperlinks into subsets of data, each representing one month.
+
+	INPUT:
+	- ``hyperlinks`` -- Dataframe containing edge data.
+	- ``weighted`` -- If set to true, multi-edges will be merged into single ones.
+	- ``undirected`` -- If set to true, directed edges will be converted to undirected ones.
+	- ``threshold`` -- A real number from 0 to 1, used to calculate edge sign
+	if the output graph is undirected. A higher threshold will delete edges
+	that have ambiguous sentiment. For example, a threshold of 1/3 means that
+	an edge (u,v) in the output undirected graph will exist and have a sign
+	only if more than 2/3 of the edges (u,v) or (v,u) in the original directed
+	multigraph were of that same sign.
+
+	OUTPUT:
+	- ``monthly_graphs`` -- A list containing the graphs each representing one month.
+	"""
 	monthly_links = []
 	for year in ['2014', '2015', '2016']:
 		for month in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']:

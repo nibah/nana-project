@@ -93,12 +93,3 @@ def merge_edges(graph, undirected=False, threshold=1/3):
 				weighted_graph.remove_edge(u,v)
 
 	return weighted_graph
-
-def cut_by_degree(original_graph, cut_range):
-	graph = original_graph.copy()
-	to_remove = []
-	for node in graph.nodes():
-		if (nx.degree(graph, node) in cut_range):
-			to_remove.append(node)
-	graph.remove_nodes_from(to_remove)
-	return graph
